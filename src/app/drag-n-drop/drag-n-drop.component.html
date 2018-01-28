@@ -1,0 +1,13 @@
+<div draggable="true" class="droppable-container" appDropTarget (myDrop)="onDrop($event)">
+	<div class="draggable-itam" *ngFor="let item of droppedStack">
+		<span>{{item.name}}</span>
+	</div>
+</div>
+<div class="dragable-container">
+	<div>
+	
+	<div class="draggable-itam" *ngFor="let item of draggableItems" [appMultipleDnd]="{data: item}">
+		<span>{{item.name}}</span>
+	</div>
+</div>
+</div>
