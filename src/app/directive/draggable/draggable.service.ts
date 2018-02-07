@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
+import { DraggableOptions } from "./draggable-options.model";
 
 @Injectable()
 export class DraggableService {
 	private zone: string;
-private droppedStack:Array<any>
-
-	constructor(){
+  private droppedStack:Array<any>
+	muliModeOn:boolean=false;
+  private highlightedItems:Array<any>;
+  constructor(){
 		this.droppedStack=[];
+    this.highlightedItems=new Array<any>();
 	}
 
   startDrag(zone: string) {
@@ -18,14 +21,29 @@ private droppedStack:Array<any>
   }
 
   addTodroppedStack(data:any){
-  	this.droppedStack.push(data);
+    if(data instanceof Array){
+      this.droppedStack = this.droppedStack.concat(data);
+    }else{
+      this.droppedStack.push(data);
+    }
   }
 
   getDroppedStack(){
   	return this.droppedStack;
   }
 
+  addToHighlightedItemStack(item){
+    this.highlightedItems.push(item);
+  }
 
+  removeFromHighlightedItemStack(item){
+    let index=this.highlightedItems.findIndex(x=>x.id==item.id);
+    this.highlightedItems.splice(index, 1);
+  }
+
+  getHighlightedItemStack(){
+    return this.highlightedItems;
+  }
 
   getUniqueId() {
   function s4() {

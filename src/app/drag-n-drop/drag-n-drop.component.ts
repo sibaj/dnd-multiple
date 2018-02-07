@@ -41,5 +41,6 @@ draggableItems:Array<DraggableItemModel>;
 
   onDrop(event){
     this.droppedStack=event;
+    console.log(this.droppedStack);
   }
 }

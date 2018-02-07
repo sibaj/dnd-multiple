@@ -7,16 +7,30 @@ import { DraggableOptions } from "./draggable-options.model";
   selector: '[appMultipleDnd]'
 })
 export class MultipleDndDirective {
-
+  @Input() backgroundColor="blue";
+  highlighted=false;
   constructor(private dragService: DraggableService,
               private _element:ElementRef) { 
     this._element.nativeElement.addEventListener('click',
       this.hostElementClicked.bind(this));
-    
   }
 
   hostElementClicked(event){
-      console.log(event.ctrlKey);
+      if(event.ctrlKey){
+        this.dragService.muliModeOn=true;
+        this.highlighted=!this.highlighted;
+        this.highlightBackground();
+        if(this.highlighted){
+          this.dragService.addToHighlightedItemStack(this.options.data);  
+        }else{
+           this.dragService.removeFromHighlightedItemStack(this.options.data);         
+        }
+      }
+  }
+
+  highlightBackground(){
+    this._element.nativeElement.style.background
+    =this.highlighted? this.backgroundColor:"white";
   }
 
   @HostBinding('draggable')
@@ -34,7 +48,10 @@ export class MultipleDndDirective {
   private options: DraggableOptions = {};
   @HostListener('dragstart', ['$event'])
   onDragStart(event) {
-    const { zone = 'zone', data = {} } = this.options;
+    const zone = 'zone';
+    let data = this.dragService.muliModeOn? 
+               this.dragService.getHighlightedItemStack():
+               this.options.data;
     this.dragService.startDrag(zone);
     event.dataTransfer.setData('Text', JSON.stringify(data));
   }
