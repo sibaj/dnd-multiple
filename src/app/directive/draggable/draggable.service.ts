@@ -5,7 +5,6 @@ import { DraggableOptions } from "./draggable-options.model";
 export class DraggableService {
 	private zone: string;
   private droppedStack:Array<any>
-	muliModeOn:boolean=false;
   private highlightedItems:Array<any>;
   constructor(){
 		this.droppedStack=[];
@@ -36,9 +35,13 @@ export class DraggableService {
     this.highlightedItems.push(item);
   }
 
-  removeFromHighlightedItemStack(item){
-    let index=this.highlightedItems.findIndex(x=>x.id==item.id);
-    this.highlightedItems.splice(index, 1);
+  removeFromHighlightedItemStack(item=null){
+    if(!item){
+      this.highlightedItems= new Array<any>();
+    }else{
+      let index=this.highlightedItems.findIndex(x=>x.id==item.id);
+      this.highlightedItems.splice(index, 1);
+    }
   }
 
   getHighlightedItemStack(){

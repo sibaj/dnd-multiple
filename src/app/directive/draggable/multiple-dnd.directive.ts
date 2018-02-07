@@ -17,7 +17,6 @@ export class MultipleDndDirective {
 
   hostElementClicked(event){
       if(event.ctrlKey){
-        this.dragService.muliModeOn=true;
         this.highlighted=!this.highlighted;
         this.highlightBackground();
         if(this.highlighted){
@@ -25,6 +24,8 @@ export class MultipleDndDirective {
         }else{
            this.dragService.removeFromHighlightedItemStack(this.options.data);         
         }
+      }else{
+        this.dragService.removeFromHighlightedItemStack();
       }
   }
 
@@ -49,7 +50,7 @@ export class MultipleDndDirective {
   @HostListener('dragstart', ['$event'])
   onDragStart(event) {
     const zone = 'zone';
-    let data = this.dragService.muliModeOn? 
+    let data = this.highlighted? 
                this.dragService.getHighlightedItemStack():
                this.options.data;
     this.dragService.startDrag(zone);
